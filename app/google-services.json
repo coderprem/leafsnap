@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1030684584073",
+    "firebase_url": "https://leafsnap-bd71a-default-rtdb.firebaseio.com",
+    "project_id": "leafsnap-bd71a",
+    "storage_bucket": "leafsnap-bd71a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030684584073:android:88275fb5f7d4cb10347e58",
+        "android_client_info": {
+          "package_name": "com.leafsnap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1030684584073-c0hqkkelag9oesp1h998v3gi6vco1hn9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leafsnap",
+            "certificate_hash": "81d9c0e0f05268c9ab8fcb3af76e18e19546012c"
+          }
+        },
+        {
+          "client_id": "1030684584073-dvfpt4a8qh8dn5ju29ucg6gm5phn5tff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHOb1uVvUFSZC8XTE37VJef8WEqIg0s9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1030684584073-dvfpt4a8qh8dn5ju29ucg6gm5phn5tff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

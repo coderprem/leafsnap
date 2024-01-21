@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/outline_home_24"/>
+
+    <item
+        android:id="@+id/garden"
+        android:title="Garden"
+        android:icon="@drawable/outline_yard_24"/>
+
+    <item
+        android:title=""/>
+
+    <item
+        android:id="@+id/map"
+        android:title="Map"
+        android:icon="@drawable/outline_map_24" />
+
+    <item
+        android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/outline_account_circle_24" />
+
+</menu>

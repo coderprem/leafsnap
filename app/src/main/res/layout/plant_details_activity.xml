@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".plant_details_activity"
+    android:orientation="vertical"
+    android:scrollbars="vertical">
+
+<!--toolbar    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:id="@+id/toolbar"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:elevation="4dp"
+        android:background="@color/primary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        <ImageView
+            android:layout_width="30dp"
+            android:id="@+id/back_btn"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:layout_gravity="center|left"
+            android:layout_height="30dp"
+            app:tint="@color/white"></ImageView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Plant Profile"
+                android:layout_gravity="center|left"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content"></TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+<!--plant img    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:id="@+id/plant_img"
+            android:scaleType="fitCenter"
+            android:src="@drawable/round_yard_60"/>
+    </LinearLayout>
+
+<!--plant social buttons and txt        -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:padding="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:background="@drawable/bottom_border"
+            android:paddingBottom="5dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:id="@+id/like_img"
+                android:scaleType="fitXY"
+                android:src="@drawable/outline_thumb_up_24"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Iban Kang and 65K others"
+                android:textSize="14dp"
+                android:id="@+id/like_count_txt"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3.2K comments"
+                android:id="@+id/comment_count_txt"
+                android:singleLine="true"
+                android:textSize="14dp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center|right"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="14dp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center|right"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15K shares"
+                android:id="@+id/share_count_txt"
+                android:singleLine="true"
+                android:textSize="14dp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center|right"/>
+
+        </LinearLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+            <TableRow android:layout_width="0dp">
+
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitXY"
+                        android:id="@+id/like_btn"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/outline_thumb_up_24"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Like"
+                    android:id="@+id/like_txt"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitXY"
+                        android:id="@+id/comment_btn"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/outline_mode_comment_24"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Comment"
+                        android:id="@+id/comment_txt"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitXY"
+                        android:id="@+id/share_btn"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/black_outline_share_24"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share"
+                        android:id="@+id/share_txt"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+<!--plant name-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Plant Name: "-->
+<!--            android:textStyle="bold"-->
+<!--            android:padding="1dp"/>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[Plant Name]"
+            android:textSize="20dp"
+            android:layout_weight="1"
+            android:id="@+id/plant_name_txt"
+            android:textStyle="normal"
+            android:padding="1dp"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:id="@+id/favorite_btn"
+            android:src="@drawable/outline_favorite_border_24"/>
+
+    </LinearLayout>
+
+<!--plant owner-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/defualt_img"
+            app:shapeAppearanceOverlay="@style/round_img_view"
+            android:id="@+id/user_photo_img"
+            android:scaleType="fitCenter"
+            android:layout_margin="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:id="@+id/username_txt"
+            android:layout_gravity="center"
+            android:textStyle="normal"
+            android:padding="1dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Follow"
+            android:id="@+id/follow_btn"
+            android:layout_gravity="center|right"
+            android:background="@drawable/button_background"
+            android:textStyle="normal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+<!--D O P-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date of Plantation:"
+            android:textStyle="bold"
+            android:padding="1dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dd/mm/yyyy"
+            android:id="@+id/plant_dob_txt"
+            android:textStyle="normal"
+            android:padding="1dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DD"
+            android:id="@+id/plant_age_txt"
+            android:textStyle="normal"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+<!--plant public note-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Public Note"
+            android:textStyle="bold"
+            android:padding="1dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/plant_public_note_txt"
+            android:hint="About Plant.. "
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:layout_gravity="center|left"
+            android:background="@drawable/button_background"/>
+    </LinearLayout>
+
+<!--Gen. info-->
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:padding="1dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="General Information:"
+                    android:textStyle="bold"
+                    android:padding="1dp"/>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableRow android:layout_width="0dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="•"
+                        android:gravity="left|center"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Common Name:"
+                        android:gravity="left|center"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="left|center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="[Common Name]"
+                        android:id="@+id/plant_common_name_txt"
+                        android:gravity="left|center"
+                        android:layout_gravity="left|center"/>
+                </TableRow>
+
+                <TableRow android:layout_width="0dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="•"
+                        android:gravity="left|center"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scientific Name:"
+                        android:gravity="left|center"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="left|center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="[Scientific Name]"
+                        android:id="@+id/plant_scientific_name_txt"
+                        android:gravity="left|center"
+                        android:layout_gravity="left|center"/>
+                </TableRow>
+
+                <TableRow android:layout_width="0dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="•"
+                        android:gravity="left|center"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Family:"
+                        android:gravity="left|center"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="left|center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="[Family]"
+                        android:id="@+id/plant_family_txt"
+                        android:gravity="left|center"
+                        android:layout_gravity="left|center"/>
+                </TableRow>
+
+                <TableRow android:layout_width="0dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="•"
+                        android:gravity="left|center"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Genus:"
+                        android:gravity="left|center"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="left|center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="[Genus]"
+                        android:id="@+id/plant_genus_txt"
+                        android:gravity="left|center"
+                        android:layout_gravity="left|center"/>
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+
+<!--plant detailed info-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:id="@+id/plant_more_detailed_info_txt"
+        android:background="@drawable/button_background"
+        android:padding="1dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detailed Information"
+            android:textStyle="bold"
+            android:layout_gravity="center|left"
+            android:layout_weight="1"
+            android:padding="1dp"
+            android:layout_marginLeft="5dp"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|center"
+            android:src="@drawable/round_keyboard_arrow_down_24"/>
+
+    </LinearLayout>
+
+<!--plant loc-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="1dp"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Plant Location"
+            android:textStyle="bold"
+            android:padding="1dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:background="@drawable/button_background">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/plant_loc_txt"
+                android:layout_margin="5dp"
+                android:text="Loc" />
+        </LinearLayout>
+    </LinearLayout>
+
+<!--weekly targets and streaks-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/plant_target_streak_txt"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+            <TableRow android:layout_width="0dp">
+
+                       <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="70dp"
+                        android:padding="5dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/button_background"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Weekly Targets"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_margin="5dp"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/target_logo"/>
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:text="2"
+                               android:id="@+id/plant_weekly_targets_txt"
+                               android:layout_gravity="center"/>
+
+                           <TextView
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:text="/"
+                               android:layout_gravity="center"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="7"
+                                android:layout_gravity="center"/>
+                        </LinearLayout>
+                       </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="70dp"
+                            android:layout_weight="1"
+                              android:padding="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/button_background">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Streaks"
+                                android:textStyle="bold"
+                                android:gravity="center"/>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_margin="5dp"
+                                android:layout_gravity="center">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:scaleType="center"
+                                    android:src="@drawable/streak_logo"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="15"
+                                    android:id="@+id/plant_streak_txt"
+                                    android:layout_gravity="center"/>
+                            </LinearLayout>
+                        </LinearLayout>
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+
+</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/delete_check_box"
+                android:text="Are you sure that you want to delete this plant permanently?"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:id="@+id/delete_btn_txt"
+                android:layout_gravity="center"
+                android:background="@drawable/edittxt_background"
+                android:padding="10dp"
+                android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>
