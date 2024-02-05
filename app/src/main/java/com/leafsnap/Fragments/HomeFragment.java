@@ -1,9 +1,11 @@
 package com.leafsnap.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,21 +16,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.leafsnap.OkHttpUtilAsync;
 import com.leafsnap.R;
 import com.leafsnap.home_plant_list_adapter;
 import com.leafsnap.login_activity;
 import com.leafsnap.plant_list_adapter;
+import com.leafsnap.target_weather;
 import com.leafsnap.view_model;
+import com.leafsnap.weather;
+import com.leafsnap.weatherapi;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +57,9 @@ import java.util.Locale;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+    //String url = "https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}";
+    String apikey = "b340dc9bd5c7d02984b0e297b52b440f";
     String guid_sip=null,token,business=null,setdefault=null,email_id = null, constr = null, aguid, guid = null,login_photo =null, login_mobile=null, devicename = null, loginname = null, Login_OTP = null, loginkey = null, timezone = null, session = null, account_type = null,device_id=null;
     SharedPreferences sharedPreferences;
     String latitude = null, longitude = null, address_loc = null, loc_name = null, address = null, city = null, postalCode = null, state = null, country = null, code = null, flag = null, ip = null, device = null;
@@ -55,6 +79,7 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    ImageSlider mainslider;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -84,6 +109,7 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -100,23 +126,104 @@ public class HomeFragment extends Fragment {
         loginname = sharedPreferences.getString(login_activity.loginname_KEY, null);
         login_photo = sharedPreferences.getString(login_activity.login_photo_KEY,null);
 
-        city = sharedPreferences.getString(login_activity.city_key,null);
+        latitude = sharedPreferences.getString(login_activity.latitude_key, null);
+        longitude = sharedPreferences.getString(login_activity.longitude_key, null);
+        loc_name = sharedPreferences.getString(login_activity.loc_name_key, null);
         address_loc = sharedPreferences.getString(login_activity.address_loc_KEY, null);
+        city = sharedPreferences.getString(login_activity.city_key, null);
+        postalCode = sharedPreferences.getString(login_activity.postalCode_key, null);
+        state = sharedPreferences.getString(login_activity.state_key, null);
+        country = sharedPreferences.getString(login_activity.country_key, null);
+        code = sharedPreferences.getString(login_activity.postalCode_key, null);
+        flag = sharedPreferences.getString(login_activity.flag_key, null);
+        device = sharedPreferences.getString(login_activity.device_key, null);
+        device_id = sharedPreferences.getString(login_activity.device_id_key, null);
+
         plant_loc_txt = view.findViewById(R.id.plant_loc_txt);
         db = FirebaseFirestore.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         swipe_layout = view.findViewById(R.id.swipe_layout);
         recyclerView = view.findViewById(R.id.recycler_view);
 
+
+
+
         swipe_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 get_plant_list();
-
+                slide_paly();
             }
         });
 
+        slide_paly();
+
+        view.findViewById(R.id.temp_txt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getweather();
+            }
+        });
         return view;
+    }
+
+    public void getweather() {
+        TextView temp_txt=view.findViewById(R.id.temp_txt);
+        OkHttpUtilAsync okHttpUtilAsync=new OkHttpUtilAsync();
+        okHttpUtilAsync.fetchNetwork();
+        Toast.makeText(getContext(), "1"+String.valueOf(okHttpUtilAsync.fetchNetwork()), Toast.LENGTH_SHORT).show();
+
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("https://api.openweathermap.org/data/2.5/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//      //  Toast.makeText(getContext(), "0"+retrofit.toString(), Toast.LENGTH_SHORT).show();
+//        weatherapi myapi = retrofit.create(weatherapi.class);
+//        Call<target_weather> targetWeather = myapi.getweather("Delhi",apikey);
+//        targetWeather.enqueue(new Callback<target_weather>() {
+//            @Override
+//            public void onResponse(Call<target_weather> call, Response<target_weather> response) {
+//                Toast.makeText(getContext(), "Error 1"+response.body(), Toast.LENGTH_SHORT).show();
+//             if (response.code()==404){
+//
+//              } else if (!(response.isSuccessful())) {
+//                 Toast.makeText(getContext(), "2"+response.code(), Toast.LENGTH_SHORT).show();
+//                }
+////
+////                target_weather mydata = response.body();
+////                weather weather = mydata.getWeather();
+////                Double temp = weather.getTemp();
+////                Integer temperature = (int)(temp-273.15);
+////                temp_txt.setText(String.valueOf(temperature)+"C");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<target_weather> call, Throwable t) {
+//                Toast.makeText(getContext(), "3"+t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+    }
+    void slide_paly()
+    {
+
+        mainslider = (ImageSlider)view.findViewById(R.id.image_slider);
+        final List<SlideModel> remoteimages=new ArrayList<>();
+
+        CollectionReference collectionReference = db.collection("slider");
+        collectionReference//.whereEqualTo("status",true).whereEqualTo("guid",guid)
+
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult().size() > 0) {
+
+                        for (QueryDocumentSnapshot s : task.getResult()) {
+
+                            remoteimages.add(new SlideModel(s.getString("url"), s.getString("title"), ScaleTypes.FIT));
+                        }
+                        mainslider.setImageList(remoteimages, ScaleTypes.FIT);
+                    }
+
+
+                });
     }
 
     @Override

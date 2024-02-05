@@ -42,7 +42,21 @@ public class NewPlantActivity extends AppCompatActivity {
         loginname = sharedPreferences.getString(login_activity.loginname_KEY, null);
         login_photo = sharedPreferences.getString(login_activity.login_photo_KEY,null);
 
+
+        latitude = sharedPreferences.getString(login_activity.latitude_key, null);
+        longitude = sharedPreferences.getString(login_activity.longitude_key, null);
+        loc_name = sharedPreferences.getString(login_activity.loc_name_key, null);
         address_loc = sharedPreferences.getString(login_activity.address_loc_KEY, null);
+        city = sharedPreferences.getString(login_activity.city_key, null);
+        postalCode = sharedPreferences.getString(login_activity.postalCode_key, null);
+        state = sharedPreferences.getString(login_activity.state_key, null);
+        country = sharedPreferences.getString(login_activity.country_key, null);
+        code = sharedPreferences.getString(login_activity.postalCode_key, null);
+        flag = sharedPreferences.getString(login_activity.flag_key, null);
+        device = sharedPreferences.getString(login_activity.device_key, null);
+        device_id = sharedPreferences.getString(login_activity.device_id_key, null);
+
+
         db = FirebaseFirestore.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         savebtn = findViewById(R.id.savebtn);
@@ -78,6 +92,12 @@ public class NewPlantActivity extends AppCompatActivity {
         mapdata.put("family","Anacardiaceae");
         mapdata.put("genus","Mangifera");
         mapdata.put("plant_loc",address_loc);
+        mapdata.put("plant_city",city);
+        mapdata.put("plant_postalcode",postalCode);
+        mapdata.put("plant_state",state);
+        mapdata.put("plant_country",country);
+        mapdata.put("plant_latitude",latitude);
+        mapdata.put("plant_longitude",longitude);
         mapdata.put("plant_target",0);
         mapdata.put("plant_streak",0);
         mapdata.put("device", android.os.Build.MODEL);

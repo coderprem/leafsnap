@@ -59,7 +59,7 @@ public class plant_details_activity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-TextView delete_btn_txt= findViewById(R.id.delete_btn_txt);
+        TextView delete_btn_txt= findViewById(R.id.delete_btn_txt);
         findViewById(R.id.delete_btn_txt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,9 +76,9 @@ TextView delete_btn_txt= findViewById(R.id.delete_btn_txt);
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
-                                                            //Snackbar.make(findViewById(android.R.id.content), "Delete Successfully", Snackbar.LENGTH_SHORT).show();
-                                                            delete_btn_txt.setText("Delete Successfully");
-                                                            onBackPressed();
+                                                        //Snackbar.make(findViewById(android.R.id.content), "Delete Successfully", Snackbar.LENGTH_SHORT).show();
+                                                        delete_btn_txt.setText("Delete Successfully");
+                                                        onBackPressed();
 
                                                     }
                                                 });
@@ -98,7 +98,7 @@ TextView delete_btn_txt= findViewById(R.id.delete_btn_txt);
             public void onClick(View view) {
                 Intent intent = new Intent(plant_details_activity.this, profile_activity.class);
                 intent.putExtra("plant_user_guid", plant_user_guid);
-                 startActivity(intent);
+                startActivity(intent);
             }
         });
 
@@ -130,7 +130,7 @@ TextView delete_btn_txt= findViewById(R.id.delete_btn_txt);
 
                         ((TextView)findViewById(R.id.username_txt)).setText("@"+ s.getString("userid"));
                         //((TextView)findViewById(R.id.user_name_txt)).setText(s.getString("name"));
-                       // ((TextView)findViewById(R.id.user_id_txt)).setText("@"+s.getString("userid"));
+                        // ((TextView)findViewById(R.id.user_id_txt)).setText("@"+s.getString("userid"));
 //                        if (s.getString("bio")!="bio") {
 //                            ((TextView)findViewById(R.id.user_bio_txt)).setText(s.getString("bio"));
 //                            findViewById(R.id.user_bio_txt).setVisibility(View.VISIBLE);
@@ -181,7 +181,7 @@ TextView delete_btn_txt= findViewById(R.id.delete_btn_txt);
                             ((TextView)findViewById(R.id.plant_genus_txt)).setText(s.getString("genus"));
                             ((TextView)findViewById(R.id.plant_weekly_targets_txt)).setText(String.valueOf(s.getDouble("plant_target").intValue()));
                             ((TextView)findViewById(R.id.plant_streak_txt)).setText(String.valueOf(s.getDouble("plant_streak").intValue()));
-                     }
+                        }
 
                     }else {
                         Toast.makeText(this, "this not available", Toast.LENGTH_SHORT).show();

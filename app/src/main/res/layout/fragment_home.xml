@@ -8,7 +8,10 @@
     android:orientation="vertical"
     android:scrollbars="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,12 +26,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="10dp">
-        <ImageView
-            android:layout_width="450dp"
-            android:layout_height="250dp"
-            android:src="@drawable/slide_img2"
-            android:layout_gravity="center"/>
-
+<!--        <ImageView-->
+<!--            android:layout_width="450dp"-->
+<!--            android:layout_height="250dp"-->
+<!--            android:src="@drawable/slide_img2"-->
+<!--            android:layout_gravity="center"/>-->
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/image_slider"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            app:iss_auto_cycle="true"
+            app:iss_period="1000"
+            app:iss_delay="0"/>
 
     </LinearLayout>
             <LinearLayout
@@ -40,6 +49,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:id="@+id/weather_img"
                     android:layout_gravity="center|left"
                     android:src="@drawable/outline_wb_sunny_24" />
 
@@ -47,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="16° C"
+                    android:id="@+id/temp_txt"
                     android:layout_gravity="center|left"
                     android:textSize="20dp"
                     android:paddingLeft="5dp"/>
@@ -98,12 +109,8 @@
             </LinearLayout>
 
 
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_layout"
-                android:layout_width="match_parent"
-                android:layout_margin="10dp"
-                android:layout_height="wrap_content">
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -114,4 +121,5 @@
 
         </LinearLayout>
     </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

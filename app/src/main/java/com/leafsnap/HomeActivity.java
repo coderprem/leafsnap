@@ -56,6 +56,7 @@ public class HomeActivity extends AppCompatActivity {
 
     String guid_sip = null, token, business = null, setdefault = null, email_id = null, constr = null, aguid, guid = null, login_photo = null, login_mobile = null, devicename = null, loginname = null, Login_OTP = null, loginkey = null, timezone = null, session = null, account_type = null, device_id = null;
     SharedPreferences sharedPreferences;
+  //location variables
     String latitude = null, longitude = null, address_loc = null, loc_name = null, address = null, city = null, postalCode = null, state = null, country = null, code = null, flag = null, ip = null, device = null;
     FloatingActionButton fab;
     DrawerLayout drawerLayout;
@@ -78,7 +79,20 @@ public class HomeActivity extends AppCompatActivity {
         email_id = sharedPreferences.getString(login_activity.email_id_KEY, null);
         loginname = sharedPreferences.getString(login_activity.loginname_KEY, null);
         login_photo = sharedPreferences.getString(login_activity.login_photo_KEY, null);
-        address_loc = sharedPreferences.getString(login_activity.login_photo_KEY, null);
+
+
+        latitude = sharedPreferences.getString(login_activity.latitude_key, null);
+        longitude = sharedPreferences.getString(login_activity.longitude_key, null);
+        loc_name = sharedPreferences.getString(login_activity.loc_name_key, null);
+        address_loc = sharedPreferences.getString(login_activity.address_loc_KEY, null);
+        city = sharedPreferences.getString(login_activity.city_key, null);
+        postalCode = sharedPreferences.getString(login_activity.postalCode_key, null);
+        state = sharedPreferences.getString(login_activity.state_key, null);
+        country = sharedPreferences.getString(login_activity.country_key, null);
+        code = sharedPreferences.getString(login_activity.postalCode_key, null);
+        flag = sharedPreferences.getString(login_activity.flag_key, null);
+        device = sharedPreferences.getString(login_activity.device_key, null);
+        device_id = sharedPreferences.getString(login_activity.device_id_key, null);
 
 //locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -351,9 +365,9 @@ public class HomeActivity extends AppCompatActivity {
                     editor.putString(login_activity.country_key, country);
                     editor.putString(login_activity.letlong_KEY, state);
                     editor.putString(login_activity.country_key, country);
-                    //editor.putString(login_activity.code_key,code);
-                    //editor.putString(login_activity.flag_key,flag);
-                    // editor.putString(login_activity.ip_key, Inet4Address.getLocalHost().getHostAddress());
+                    editor.putString(login_activity.code_key,code);
+                    editor.putString(login_activity.flag_key,flag);
+                    //editor.putString(login_activity.ip_key, Inet4Address.getLocalHost().getHostAddress());
 
                     editor.apply();
                     //
