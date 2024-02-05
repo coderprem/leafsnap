@@ -33,6 +33,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.Source;
 import com.leafsnap.R;
 import com.leafsnap.login_activity;
 import com.leafsnap.plant_list_adapter;
@@ -167,13 +168,12 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         get_user_details();
-
     }
 
     void get_user_details(){
 
         DocumentReference docIdRef = db.collection("account").document(guid);
-        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        docIdRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {

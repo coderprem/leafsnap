@@ -179,7 +179,6 @@ public class user_profile_edit_activity extends AppCompatActivity {
     public void updateProfileImage(Uri imageUri) {
         // Set the selected image URI
         selectedImageUri = imageUri;
-
         // Display the selected image
         imageView.setImageURI(selectedImageUri);
     }
@@ -204,6 +203,7 @@ public class user_profile_edit_activity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            onBackPressed();
                                             Toast.makeText(user_profile_edit_activity.this, "Profile image updated!", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(user_profile_edit_activity.this, "Failed to update profile image!", Toast.LENGTH_SHORT).show();
