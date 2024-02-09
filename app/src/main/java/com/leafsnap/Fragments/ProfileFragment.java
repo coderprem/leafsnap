@@ -117,6 +117,15 @@ public class ProfileFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
+        swipe_layout = view.findViewById(R.id.swipe_layout);
+        swipe_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                get_user_details();
+
+            }
+        });
+
         ((ImageView)view.findViewById(R.id.menu_btn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,6 +202,7 @@ public class ProfileFragment extends Fragment {
 
                         //get plant data
                         get_profile_plant_list();
+                        swipe_layout.setRefreshing(false);
                     } else {
 
                     }

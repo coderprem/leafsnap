@@ -1,11 +1,10 @@
 package com.leafsnap.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,42 +13,41 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.leafsnap.OkHttpUtilAsync;
 import com.leafsnap.R;
 import com.leafsnap.home_plant_list_adapter;
 import com.leafsnap.login_activity;
-import com.leafsnap.plant_list_adapter;
-import com.leafsnap.target_weather;
+import com.leafsnap.profile_menu_dialog;
 import com.leafsnap.view_model;
-import com.leafsnap.weather;
-import com.leafsnap.weatherapi;
+import com.leafsnap.wheather_menu_dialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,18 +56,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class HomeFragment extends Fragment {
 
-    //String url = "https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}";
-    String apikey = "b340dc9bd5c7d02984b0e297b52b440f";
+    private final String url = "https://api.openweathermap.org/data/2.5/weather";
+    private final String appid = "72cf400e500bc51e0fb0cc91a7b8da72";
+    DecimalFormat df = new DecimalFormat("#.##");
+
     String guid_sip=null,token,business=null,setdefault=null,email_id = null, constr = null, aguid, guid = null,login_photo =null, login_mobile=null, devicename = null, loginname = null, Login_OTP = null, loginkey = null, timezone = null, session = null, account_type = null,device_id=null;
     SharedPreferences sharedPreferences;
     String latitude = null, longitude = null, address_loc = null, loc_name = null, address = null, city = null, postalCode = null, state = null, country = null, code = null, flag = null, ip = null, device = null;
     FirebaseUser firebaseUser;
     private FirebaseFirestore db;
 
-    TextView plant_loc_txt;
+    TextView plant_loc_txt, temp_txt;
     View view;
     SwipeRefreshLayout swipe_layout;
     RecyclerView recyclerView;
+    TextView tvResult;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -145,64 +147,30 @@ public class HomeFragment extends Fragment {
         swipe_layout = view.findViewById(R.id.swipe_layout);
         recyclerView = view.findViewById(R.id.recycler_view);
 
+        temp_txt = view.findViewById(R.id.temp_txt);
 
-
+        temp_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getWeatherDetails();
+            }
+        });
 
         swipe_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 get_plant_list();
                 slide_paly();
+                getWeatherDetails();
             }
         });
 
         slide_paly();
 
-        view.findViewById(R.id.temp_txt).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getweather();
-            }
-        });
         return view;
     }
 
-    public void getweather() {
-        TextView temp_txt=view.findViewById(R.id.temp_txt);
-        OkHttpUtilAsync okHttpUtilAsync=new OkHttpUtilAsync();
-        okHttpUtilAsync.fetchNetwork();
-        Toast.makeText(getContext(), "1"+String.valueOf(okHttpUtilAsync.fetchNetwork()), Toast.LENGTH_SHORT).show();
 
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://api.openweathermap.org/data/2.5/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//      //  Toast.makeText(getContext(), "0"+retrofit.toString(), Toast.LENGTH_SHORT).show();
-//        weatherapi myapi = retrofit.create(weatherapi.class);
-//        Call<target_weather> targetWeather = myapi.getweather("Delhi",apikey);
-//        targetWeather.enqueue(new Callback<target_weather>() {
-//            @Override
-//            public void onResponse(Call<target_weather> call, Response<target_weather> response) {
-//                Toast.makeText(getContext(), "Error 1"+response.body(), Toast.LENGTH_SHORT).show();
-//             if (response.code()==404){
-//
-//              } else if (!(response.isSuccessful())) {
-//                 Toast.makeText(getContext(), "2"+response.code(), Toast.LENGTH_SHORT).show();
-//                }
-////
-////                target_weather mydata = response.body();
-////                weather weather = mydata.getWeather();
-////                Double temp = weather.getTemp();
-////                Integer temperature = (int)(temp-273.15);
-////                temp_txt.setText(String.valueOf(temperature)+"C");
-//            }
-//
-//            @Override
-//            public void onFailure(Call<target_weather> call, Throwable t) {
-//                Toast.makeText(getContext(), "3"+t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-    }
     void slide_paly()
     {
 
@@ -231,6 +199,7 @@ public class HomeFragment extends Fragment {
         super.onResume();
         plant_loc_txt.setText(address_loc);
         get_plant_list();
+        getWeatherDetails();
     }
 
     void get_plant_list(){
@@ -270,4 +239,70 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
+
+    public void getWeatherDetails() {
+        String tempUrl = "";
+//        String city = .getText().toString().trim();
+//        String country = etCountry.getText().toString().trim();
+        if(city.equals("")){
+            temp_txt.setText("City field can not be empty!");
+        }else{
+            if(!country.equals("")){
+                tempUrl = url + "?q=" + city + "," + country + "&appid=" + appid;
+            }else{
+                tempUrl = url + "?q=" + city + "&appid=" + appid;
+            }
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String output = "";
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        JSONArray jsonArray = jsonResponse.getJSONArray("weather");
+                        JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
+                        String description = jsonObjectWeather.getString("description");
+                        JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
+                        double temp = jsonObjectMain.getDouble("temp") - 273.15;
+                        double feelsLike = jsonObjectMain.getDouble("feels_like") - 273.15;
+                        float pressure = jsonObjectMain.getInt("pressure");
+                        int humidity = jsonObjectMain.getInt("humidity");
+                        JSONObject jsonObjectWind = jsonResponse.getJSONObject("wind");
+                        String wind = jsonObjectWind.getString("speed");
+                        JSONObject jsonObjectClouds = jsonResponse.getJSONObject("clouds");
+                        String clouds = jsonObjectClouds.getString("all");
+                        JSONObject jsonObjectSys = jsonResponse.getJSONObject("sys");
+                        String countryName = jsonObjectSys.getString("country");
+                        String cityName = jsonResponse.getString("name");
+
+                        wheather_menu_dialog menuDialog = new wheather_menu_dialog();
+                        menuDialog.showBottomDialog(getContext(), String.format(Locale.getDefault(), "%.2f °C", temp), description, humidity);
+                        temp_txt.setTextColor(Color.rgb(68,134,199));
+                        output +=
+                                //"Current weather of " + cityName + " (" + countryName + ")"
+                                df.format(temp) + " °C";
+//                                + "\n Feels Like: " + df.format(feelsLike) + " °C"
+//                                + "\n Humidity: " + humidity + "%"
+//                                + "\n Description: " + description
+//                                + "\n Wind Speed: " + wind + "m/s (meters per second)"
+//                                + "\n Cloudiness: " + clouds + "%"
+//                                + "\n Pressure: " + pressure + " hPa";
+                        temp_txt.setText(output);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener(){
+
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue.add(stringRequest);
+        }
+    }
 }
+
+

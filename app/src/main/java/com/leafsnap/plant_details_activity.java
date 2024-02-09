@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,6 +28,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -71,11 +75,13 @@ public class plant_details_activity extends AppCompatActivity {
                             .get().addOnCompleteListener(task -> {
                                 if (task.isSuccessful() && task.getResult().size()>0) {
                                     for (QueryDocumentSnapshot s : task.getResult()) {
+                                        delete_plant_img(s.getString("photo"));
                                         db.collection("plants").document(s.getId())
                                                 .delete()
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
+
                                                         //Snackbar.make(findViewById(android.R.id.content), "Delete Successfully", Snackbar.LENGTH_SHORT).show();
                                                         delete_btn_txt.setText("Delete Successfully");
                                                         onBackPressed();
@@ -116,6 +122,23 @@ public class plant_details_activity extends AppCompatActivity {
         get_plant_details();
     }
 
+    void delete_plant_img(String imageName){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageName);
+        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                //Log.e("firebasestorage", "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+              //  Log.e("firebasestorage", "onFailure: did not delete file");
+            }
+        });
+
+    }
     void get_user_details(){
 
         DocumentReference docIdRef = db.collection("account").document(plant_user_guid);

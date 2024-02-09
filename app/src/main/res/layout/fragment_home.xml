@@ -59,7 +59,8 @@
                     android:text="16° C"
                     android:id="@+id/temp_txt"
                     android:layout_gravity="center|left"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
                     android:paddingLeft="5dp"/>
 
                 <LinearLayout
@@ -98,6 +99,7 @@
                 android:orientation="horizontal"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp">
+
 
                 <TextView
                     android:layout_width="wrap_content"

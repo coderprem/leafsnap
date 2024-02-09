@@ -21,7 +21,7 @@
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
         <ImageView
             android:layout_width="30dp"
-            android:id="@+id/menu_btn"
+            android:id="@+id/back_btn"
             android:src="@drawable/baseline_arrow_back_24"
             android:layout_gravity="center|left"
             android:layout_height="30dp"
@@ -42,6 +42,22 @@
                 android:textColor="@color/white"
                 android:layout_height="wrap_content"></TextView>
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/camera_btn"
+            android:src="@drawable/outline_photo_camera_24"
+            app:tint = "@color/black"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
 
     </LinearLayout>
     <LinearLayout

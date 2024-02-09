@@ -18,6 +18,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.leafsnap.walkthrough_screen.walkththough_navigation_activity;
 
 import java.util.List;
 
@@ -90,14 +91,14 @@ public class welcome_activity extends AppCompatActivity {
         if (guid !=null && user !=null) {
                  Intent intent = new Intent(welcome_activity.this, HomeActivity.class);
                 startActivity(intent);
-                // this.finish();
+                this.finish();
                 // overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         }
         else
         {
-            Intent intent = new Intent(welcome_activity.this, login_activity.class);
+            Intent intent = new Intent(welcome_activity.this, walkththough_navigation_activity.class);
             startActivity(intent);
-          //this.finish();
+          this.finish();
         // overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         }
 

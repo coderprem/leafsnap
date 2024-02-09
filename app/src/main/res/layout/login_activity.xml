@@ -27,57 +27,57 @@
             android:textSize="16dp"
             android:text="Leaf Snap"
             android:layout_height="wrap_content"></TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="Login Email"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content"></TextView>
-        <EditText
-            android:layout_width="match_parent"
-            android:hint="Email"
-            android:textSize="16dp"
-            android:id="@+id/email_edit_text"
-            android:padding="5dp"
-            android:background="@drawable/edittext_rounded"
-            android:layout_height="35dp"></EditText>
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="Login Password"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content"></TextView>
-        <EditText
-            android:layout_width="match_parent"
-            android:hint="Password"
-            android:textSize="16dp"
-            android:id="@+id/password_edit_text"
-            android:inputType="textPassword"
-            android:padding="5dp"
-            android:background="@drawable/edittext_rounded"
-            android:layout_height="35dp"></EditText>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:text="Login Email"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_height="wrap_content"></TextView>-->
+<!--        <EditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:hint="Email"-->
+<!--            android:textSize="16dp"-->
+<!--            android:id="@+id/email_edit_text"-->
+<!--            android:padding="5dp"-->
+<!--            android:background="@drawable/edittext_rounded"-->
+<!--            android:layout_height="35dp"></EditText>-->
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:text="Login Password"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_height="wrap_content"></TextView>-->
+<!--        <EditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:hint="Password"-->
+<!--            android:textSize="16dp"-->
+<!--            android:id="@+id/password_edit_text"-->
+<!--            android:inputType="textPassword"-->
+<!--            android:padding="5dp"-->
+<!--            android:background="@drawable/edittext_rounded"-->
+<!--            android:layout_height="35dp"></EditText>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="Forget password"
-            android:layout_gravity="right"
-            android:id="@+id/forgot_password_btn"
-            android:layout_marginTop="5dp"
-            android:textSize="14dp"
-            android:layout_height="wrap_content"></TextView>
-        <ProgressBar
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/progress_bar"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:id="@+id/login_btn"
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:text="Forget password"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:id="@+id/forgot_password_btn"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:textSize="14dp"-->
+<!--            android:layout_height="wrap_content"></TextView>-->
+<!--        <ProgressBar-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:id="@+id/progress_bar"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:visibility="gone" />-->
+<!--        <Button-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:id="@+id/login_btn"-->
 
-            android:text="Login"
-            android:layout_height="wrap_content"></Button>
+<!--            android:text="Login"-->
+<!--            android:layout_height="wrap_content"></Button>-->
 
     </LinearLayout>
     <LinearLayout
