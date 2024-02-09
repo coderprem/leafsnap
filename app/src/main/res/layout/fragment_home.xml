@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:id="@+id/weather_layout"
                 android:layout_margin="10dp">
 
                 <ImageView
@@ -51,7 +52,8 @@
                     android:layout_height="30dp"
                     android:id="@+id/weather_img"
                     android:layout_gravity="center|left"
-                    android:src="@drawable/outline_wb_sunny_24" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/wheather_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -103,10 +105,11 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|left"
+                    android:id="@+id/test"
                     android:text="Today's Task"
-                    android:textStyle="bold"
-                    android:layout_gravity="center|left" />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

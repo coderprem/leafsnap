@@ -271,7 +271,7 @@ public class login_activity extends AppCompatActivity {
         mapdata.put("loginkey", loginkey);
         mapdata.put("device", android.os.Build.MODEL);
         mapdata.put("device_id", device_id);
-       // mapdata.put("token", token);
+       mapdata.put("token", token);
        // mapdata.put("loginname",loginname);
        // mapdata.put("photo", String.valueOf(user.getPhotoUrl()));
        // mapdata.put("Status", "true");
@@ -289,7 +289,7 @@ public class login_activity extends AppCompatActivity {
          editor.apply();
         Intent intent = new Intent(login_activity.this, HomeActivity.class);
         startActivity(intent);
-        this.finish();
+       // this.finish();
         //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
     private void signup_retract_activity()
@@ -329,7 +329,7 @@ public class login_activity extends AppCompatActivity {
             if (task2.isSuccessful()) {
                 Intent intent = new Intent(login_activity.this, HomeActivity.class);
                 startActivity(intent);
-                this.finish();
+               // this.finish();
                 //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
         });

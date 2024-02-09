@@ -277,7 +277,7 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, login_activity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish();
+       // finish();
     }
 
     private void hideViewsForSearch() {

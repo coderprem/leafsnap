@@ -80,10 +80,18 @@
 <!--            android:layout_height="wrap_content"></Button>-->
 
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/default_tree_icon"></ImageView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_below="@+id/login_layout"
+        android:layout_above="@+id/from_txt"
         android:layout_marginBottom="30dp"
         android:id="@+id/login_drt"
         android:layout_height="wrap_content">
@@ -120,6 +128,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_marginBottom="30dp"
+        android:id="@+id/from_txt"
  android:layout_alignParentBottom="true"
         android:layout_height="wrap_content">
         <TextView

@@ -108,6 +108,7 @@ public class GardenFragment extends Fragment {
         swipe_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 get_plant_list();
             }
         });

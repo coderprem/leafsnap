@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -189,6 +190,11 @@ public class plant_details_activity extends AppCompatActivity {
                             if (s.getString("guid").equals(guid)) {
                                 ImageView fav_plant_img = findViewById(R.id.favorite_btn);
                                 fav_plant_img.setVisibility(View.GONE);
+
+                                ((LinearLayout)findViewById(R.id.delete_linear)).setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                ((LinearLayout)findViewById(R.id.delete_linear)).setVisibility(View.GONE);
                             }
                             ((TextView)findViewById(R.id.plant_name_txt)).setText(s.getString("plant_name"));
                             ((TextView)findViewById(R.id.plant_loc_txt)).setText(s.getString("plant_loc"));

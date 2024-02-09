@@ -148,11 +148,13 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
 
         temp_txt = view.findViewById(R.id.temp_txt);
-
-        temp_txt.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.weather_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            try {
                 getWeatherDetails();
+            }catch (Exception e) {
+            }
             }
         });
 
@@ -161,7 +163,7 @@ public class HomeFragment extends Fragment {
             public void onRefresh() {
                 get_plant_list();
                 slide_paly();
-                getWeatherDetails();
+
             }
         });
 
@@ -199,7 +201,8 @@ public class HomeFragment extends Fragment {
         super.onResume();
         plant_loc_txt.setText(address_loc);
         get_plant_list();
-        getWeatherDetails();
+
+       getTemp();
     }
 
     void get_plant_list(){
@@ -274,19 +277,29 @@ public class HomeFragment extends Fragment {
                         String countryName = jsonObjectSys.getString("country");
                         String cityName = jsonResponse.getString("name");
 
-                        wheather_menu_dialog menuDialog = new wheather_menu_dialog();
-                        menuDialog.showBottomDialog(getContext(), String.format(Locale.getDefault(), "%.2f °C", temp), description, humidity);
-                        temp_txt.setTextColor(Color.rgb(68,134,199));
-                        output +=
-                                //"Current weather of " + cityName + " (" + countryName + ")"
-                                df.format(temp) + " °C";
-//                                + "\n Feels Like: " + df.format(feelsLike) + " °C"
-//                                + "\n Humidity: " + humidity + "%"
-//                                + "\n Description: " + description
-//                                + "\n Wind Speed: " + wind + "m/s (meters per second)"
-//                                + "\n Cloudiness: " + clouds + "%"
-//                                + "\n Pressure: " + pressure + " hPa";
-                        temp_txt.setText(output);
+                        String formattedTemp = df.format(temp);
+                        String formattedFeelsLike = df.format(feelsLike);
+                        String formattedPressure = df.format(pressure);
+                        String formattedWind = df.format(Double.parseDouble(wind));
+                        String formattedHumidity = df.format(humidity);
+                        String formattedClouds = df.format(Double.parseDouble(clouds));
+
+                       wheather_menu_dialog menuDialog = new wheather_menu_dialog();
+                      menuDialog.showBottomDialog(getContext(), city, String.format(Locale.getDefault(), "%.2f °C", Double.parseDouble(formattedTemp)), Double.parseDouble(formattedFeelsLike) , (int) Double.parseDouble(formattedHumidity), String.format(Locale.getDefault(), "%.2f m/s", Double.parseDouble(formattedWind)), String.valueOf(Double.parseDouble(formattedClouds)), (float) Double.parseDouble(formattedPressure), description );
+
+                        //temp_txt.setTextColor(Color.rgb(68,134,199));
+                        //String.format(Locale.getDefault(), "%.2f m/s", Double.parseDouble(formattedWind))
+//                        output +=
+//                                //"Current weather of " + cityName + " (" + countryName + ")"
+//                                 df.format(temp) + " °C"
+////                                + "\n Feels Like: " + df.format(feelsLike) + " °C"
+////                                + "\n Humidity: " + humidity + "%"
+////                                + "\n Description: " + description
+//                               + "\n Wind Speed: " + wind + "m/s (meters per second)";
+////                                + "\n Cloudiness: " + clouds + "%"
+////                                + "\n Pressure: " + pressure + " hPa";
+//                        TextView test = view.findViewById(R.id.test);
+//                        test.setText(output);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -301,6 +314,73 @@ public class HomeFragment extends Fragment {
             });
             RequestQueue requestQueue = Volley.newRequestQueue(getContext());
             requestQueue.add(stringRequest);
+        }
+    }
+
+    public void getTemp() {
+        try {
+
+            String tempUrl = "";
+//        String city = .getText().toString().trim();
+//        String country = etCountry.getText().toString().trim();
+            if (city.equals("")) {
+                temp_txt.setText("City field can not be empty!");
+            } else {
+                if (!country.equals("")) {
+                    tempUrl = url + "?q=" + city + "," + country + "&appid=" + appid;
+                } else {
+                    tempUrl = url + "?q=" + city + "&appid=" + appid;
+                }
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        String output = "";
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            JSONArray jsonArray = jsonResponse.getJSONArray("weather");
+                            JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
+                            String description = jsonObjectWeather.getString("description");
+                            JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
+                            double temp = jsonObjectMain.getDouble("temp") - 273.15;
+//                        double feelsLike = jsonObjectMain.getDouble("feels_like") - 273.15;
+//                        float pressure = jsonObjectMain.getInt("pressure");
+//                        int humidity = jsonObjectMain.getInt("humidity");
+//                        JSONObject jsonObjectWind = jsonResponse.getJSONObject("wind");
+//                        String wind = jsonObjectWind.getString("speed");
+//                        JSONObject jsonObjectClouds = jsonResponse.getJSONObject("clouds");
+//                        String clouds = jsonObjectClouds.getString("all");
+//                        JSONObject jsonObjectSys = jsonResponse.getJSONObject("sys");
+//                        String countryName = jsonObjectSys.getString("country");
+//                        String cityName = jsonResponse.getString("name");
+
+                            String formattedTemp = df.format(temp);
+
+
+//                        wheather_menu_dialog menuDialog = new wheather_menu_dialog();
+//                        menuDialog.showBottomDialog(getContext(), city, String.format(Locale.getDefault(), "%.2f °C", Double.parseDouble(formattedTemp)), Double.parseDouble(formattedFeelsLike) , (int) Double.parseDouble(formattedHumidity), String.format(Locale.getDefault(), "%.2f m/s", Double.parseDouble(formattedWind)), String.valueOf(Double.parseDouble(formattedClouds)), (float) Double.parseDouble(formattedPressure), description );
+//                        temp_txt.setTextColor(Color.rgb(68,134,199));
+                            output += df.format(temp) + " °C";
+//
+                            temp_txt.setText(output);
+                            //getWeatherDetails();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                requestQueue.add(stringRequest);
+            }
+        }catch (Exception ex){
+          //  Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+
         }
     }
 }

@@ -88,17 +88,17 @@ public class welcome_activity extends AppCompatActivity {
     private void loginStart() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (guid !=null && user !=null) {
+        if (guid !=null) {
                  Intent intent = new Intent(welcome_activity.this, HomeActivity.class);
                 startActivity(intent);
-                this.finish();
+                //this.finish();
                 // overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         }
         else
         {
-            Intent intent = new Intent(welcome_activity.this, walkththough_navigation_activity.class);
+            Intent intent = new Intent(welcome_activity.this,login_activity.class);
             startActivity(intent);
-          this.finish();
+         // this.finish();
         // overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         }
 
