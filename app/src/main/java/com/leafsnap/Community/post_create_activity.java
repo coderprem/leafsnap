@@ -1,4 +1,4 @@
-package com.leafsnap;
+package com.leafsnap.Community;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -25,13 +26,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.leafsnap.Fragments.GardenFragment;
+import com.leafsnap.HomeActivity;
+import com.leafsnap.R;
+import com.leafsnap.Utils;
+import com.leafsnap.login_activity;
+import com.leafsnap.plant_details_activity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewPlantActivity extends AppCompatActivity {
+public class post_create_activity extends AppCompatActivity {
+
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     String guid_sip=null,token,business=null,setdefault=null,email_id = null, constr = null, aguid, guid = null,login_photo =null, login_mobile=null, devicename = null, loginname = null, Login_OTP = null, loginkey = null, timezone = null, session = null, account_type = null,device_id=null;
     SharedPreferences sharedPreferences;
@@ -42,13 +49,14 @@ public class NewPlantActivity extends AppCompatActivity {
 
     ImageView camera_btn;
     Button savebtn;
-    EditText plant_name;
+    EditText post_caption_txt;
     private Bitmap capturedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_plant);
+        setContentView(R.layout.post_create_activity);
+
         sharedPreferences = getSharedPreferences(login_activity.SHARED_PREFS, Context.MODE_PRIVATE);
         guid = sharedPreferences.getString(login_activity.Guid_KEY,null);
         email_id = sharedPreferences.getString(login_activity.email_id_KEY,null);
@@ -72,8 +80,8 @@ public class NewPlantActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        savebtn = findViewById(R.id.savebtn);
-        plant_name = findViewById(R.id.plant_name);
+        savebtn = findViewById(R.id.save_btn);
+        post_caption_txt = findViewById(R.id.caption_txt);
         camera_btn = findViewById(R.id.camera_btn);
 
         findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
@@ -83,18 +91,6 @@ public class NewPlantActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
-//        savebtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (plant_name !=null && camera_btn !=null) {
-//                    create_new_plant();
-//                }
-//                else{
-//                    Toast.makeText(NewPlantActivity.this, "Fill required fields!!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
 
         // OnClickListener for camera button
         camera_btn.setOnClickListener(new View.OnClickListener() {
@@ -111,15 +107,15 @@ public class NewPlantActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Check if plant name is not empty and an image is captured
                 if (capturedImage != null) {
-                    String plantNameText = plant_name.getText().toString().trim();
+                    String plantNameText = post_caption_txt.getText().toString().trim();
                     if (TextUtils.isEmpty(plantNameText)) {
-                        Toast.makeText(NewPlantActivity.this, "Please enter a plant name", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(post_create_activity.this, "Please enter a plant name", Toast.LENGTH_SHORT).show();
                     } else {
                         // Save the captured image and plant details
                         uploadImageAndSavePlant(plantNameText);
                     }
                 } else {
-                    Toast.makeText(NewPlantActivity.this, "Please capture a plant picture", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(post_create_activity.this, "Please capture a plant picture", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -134,9 +130,25 @@ public class NewPlantActivity extends AppCompatActivity {
 
     // Method to open camera and capture image
     private void dispatchTakePictureIntent() {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//        }
+        // Create an intent to choose between camera or gallery
+        Intent pickIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        // Create an intent to capture image from camera
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
+        // Create chooser intent to display camera or gallery options
+        Intent chooserIntent = Intent.createChooser(pickIntent, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {takePictureIntent});
+
+        // Check if there are apps available to handle this intent
+        if (chooserIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(chooserIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
@@ -144,60 +156,44 @@ public class NewPlantActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-            Bundle extras = data.getExtras();
-            if (extras != null && extras.containsKey("data")) {
-                capturedImage = (Bitmap) extras.get("data");
-                // Display the captured image
-                camera_btn.setImageBitmap(capturedImage);
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+//            Bundle extras = data.getExtras();
+//            if (extras != null && extras.containsKey("data")) {
+//                capturedImage = (Bitmap) extras.get("data");
+//                // Display the captured image
+//                camera_btn.setImageBitmap(capturedImage);
+//            }
+//        }
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                // Image selected from gallery
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(data.getData());
+                    capturedImage = BitmapFactory.decodeStream(inputStream);
+                    inputStream.close();
+                    // Display the selected image
+                    camera_btn.setImageBitmap(capturedImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // Image captured from camera
+                Bundle extras = data.getExtras();
+                if (extras != null && extras.containsKey("data")) {
+                    capturedImage = (Bitmap) extras.get("data");
+                    // Display the captured image
+                    camera_btn.setImageBitmap(capturedImage);
+                }
             }
         }
     }
-//    void create_new_plant(){
-//
-//        String reg_uid= Utils.randomcode(16);
-//        Map<String, Object> mapdata = new HashMap<>();
-//        mapdata.put("reg_uid",reg_uid);
-//        mapdata.put("guid", guid);
-//        mapdata.put("photo", String.valueOf("https://leafsnap.ibankang.com/app_images/default_icon.png"));
-//        mapdata.put("like",0);
-//        mapdata.put("comment", 0);
-//        mapdata.put("share",0);
-//        mapdata.put("plant_name",plant_name.getText().toString());
-//        mapdata.put("user_img","");
-//        mapdata.put("username","");
-//        mapdata.put("dob", FieldValue.serverTimestamp());
-//        mapdata.put("plant_note","hello, this is my mango tree");
-//        mapdata.put("common_name","Mango");
-//        mapdata.put("scientific_name","Mangifera indica");
-//        mapdata.put("family","Anacardiaceae");
-//        mapdata.put("genus","Mangifera");
-//        mapdata.put("plant_loc",address_loc);
-//        mapdata.put("plant_city",city);
-//        mapdata.put("plant_postalcode",postalCode);
-//        mapdata.put("plant_state",state);
-//        mapdata.put("plant_country",country);
-//        mapdata.put("plant_latitude",latitude);
-//        mapdata.put("plant_longitude",longitude);
-//        mapdata.put("plant_target",0);
-//        mapdata.put("plant_streak",0);
-//        mapdata.put("device", android.os.Build.MODEL);
-//        mapdata.put("status", true);
-//        mapdata.put("date_time", FieldValue.serverTimestamp());
-//        CollectionReference CRefedata = db.collection("plants");
-//        CRefedata.document(reg_uid).set(mapdata).addOnCompleteListener(task2 -> {
-//            if (task2.isSuccessful()) {
-//                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(NewPlantActivity.this, HomeActivity.class));
-//            }
-//        });
-//    }
 
     // Method to upload image to Firebase Storage and save plant details
     private void uploadImageAndSavePlant(String plantNameText) {
 
         if (capturedImage == null) {
-            Toast.makeText(NewPlantActivity.this, "No image captured", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No image captured", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -231,56 +227,48 @@ public class NewPlantActivity extends AppCompatActivity {
                 });
             } else {
                 // Handle failed image upload
-                Toast.makeText(NewPlantActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void savePlantDetails(String imageUrl, String plant_name) {
+    private void savePlantDetails(String imageUrl, String post_caption_txt) {
 
-        String reg_uid= Utils.randomcode(16);
+        String post_uid= Utils.randomcode(16);
 
         Map<String, Object> mapdata = new HashMap<>();
-        mapdata.put("reg_uid",reg_uid);
+        mapdata.put("post_uid",post_uid);
         mapdata.put("guid", guid);
         mapdata.put("photo", String.valueOf(imageUrl));
         mapdata.put("like",0);
         mapdata.put("comment", 0);
         mapdata.put("share",0);
-        mapdata.put("plant_name",plant_name);
         mapdata.put("user_img","");
         mapdata.put("username","");
-        mapdata.put("dob", FieldValue.serverTimestamp());
-        mapdata.put("plant_note","hello, this is my mango tree");
-        mapdata.put("common_name","Mango");
-        mapdata.put("scientific_name","Mangifera indica");
-        mapdata.put("family","Anacardiaceae");
-        mapdata.put("genus","Mangifera");
-        mapdata.put("plant_loc",address_loc);
-        mapdata.put("plant_city",city);
-        mapdata.put("plant_postalcode",postalCode);
-        mapdata.put("plant_state",state);
-        mapdata.put("plant_country",country);
-        mapdata.put("plant_latitude",latitude);
-        mapdata.put("plant_longitude",longitude);
-        mapdata.put("plant_target",0);
-        mapdata.put("plant_streak",0);
+        mapdata.put("caption",post_caption_txt);
+        mapdata.put("post_loc",address_loc);
+        mapdata.put("post_city",city);
+        mapdata.put("post_postalcode",postalCode);
+        mapdata.put("post_state",state);
+        mapdata.put("post_country",country);
+        mapdata.put("post_latitude",latitude);
+        mapdata.put("post_longitude",longitude);
         mapdata.put("device", android.os.Build.MODEL);
         mapdata.put("status", true);
         mapdata.put("date_time", FieldValue.serverTimestamp());
-        CollectionReference CRefedata = db.collection("plants");
-        CRefedata.document(reg_uid).set(mapdata).addOnCompleteListener(task2 -> {
+        CollectionReference CRefedata = db.collection("posts");
+        CRefedata.document(post_uid).set(mapdata).addOnCompleteListener(task2 -> {
             if (task2.isSuccessful()) {
                 // Plant data saved successfully
                 Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(NewPlantActivity.this,plant_details_activity.class);
-                intent.putExtra("reg_uid",reg_uid);
+                Intent intent = new Intent(post_create_activity.this, HomeActivity.class);
+                intent.putExtra("post_uid",post_uid);
                 startActivity(intent);
                 onBackPressed();
             }
             else {
                 // Failed to save plant data
-                Toast.makeText(NewPlantActivity.this, "Failed to save plant details", Toast.LENGTH_SHORT).show();
+                Toast.makeText(post_create_activity.this, "Failed to save plant details", Toast.LENGTH_SHORT).show();
             }
         });
     }

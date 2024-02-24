@@ -2,10 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <meta-data
         android:name="com.google.android.geo.API_KEY"
@@ -21,6 +28,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LeafSnap"
         tools:targetApi="31">
+        <activity
+            android:name=".Community.posts_activity"
+            android:exported="false" />
+        <activity
+            android:name=".Community.post_create_activity"
+            android:exported="false" />
+        <activity
+            android:name=".task_complete_activity"
+            android:exported="false" />
+        <activity
+            android:name=".task_day_activity"
+            android:exported="false" />
+        <activity
+            android:name=".administrator.task_edit_activity"
+            android:exported="false" />
+        <activity
+            android:name=".administrator.task_list_activity"
+            android:exported="false" />
+        <activity
+            android:name=".administrator.administrator_activity"
+            android:exported="false" />
+        <activity
+            android:name=".administrator.task_create_activity"
+            android:exported="false" />
         <activity
             android:name=".walkthrough_screen.walkththough_navigation_activity"
             android:exported="false" />
@@ -50,6 +81,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,8 +1,8 @@
 package com.leafsnap.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,7 +13,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,9 +32,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.leafsnap.R;
+import com.leafsnap.administrator.task_list_adapter;
 import com.leafsnap.home_plant_list_adapter;
 import com.leafsnap.login_activity;
-import com.leafsnap.profile_menu_dialog;
+import com.leafsnap.administrator.task_create_activity;
+import com.leafsnap.task_day_activity;
+import com.leafsnap.task_of_day_adapter;
 import com.leafsnap.view_model;
 import com.leafsnap.wheather_menu_dialog;
 
@@ -69,8 +71,8 @@ public class HomeFragment extends Fragment {
     TextView plant_loc_txt, temp_txt;
     View view;
     SwipeRefreshLayout swipe_layout;
-    RecyclerView recyclerView;
-    TextView tvResult;
+
+    TextView task_txt;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -145,7 +147,9 @@ public class HomeFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         swipe_layout = view.findViewById(R.id.swipe_layout);
-        recyclerView = view.findViewById(R.id.recycler_view);
+
+
+
 
         temp_txt = view.findViewById(R.id.temp_txt);
         view.findViewById(R.id.weather_layout).setOnClickListener(new View.OnClickListener() {
@@ -158,16 +162,24 @@ public class HomeFragment extends Fragment {
             }
         });
 
+//        view.findViewById(R.id.task_txt).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getContext(), task_day_activity.class);
+//                startActivity(intent);
+//            }
+//        });
+
         swipe_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 get_plant_list();
-                slide_paly();
-
             }
         });
 
         slide_paly();
+        get_task_list();
+        get_plant_list();
 
         return view;
     }
@@ -200,20 +212,17 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         plant_loc_txt.setText(address_loc);
-        get_plant_list();
-
-       getTemp();
+        getTemp();
     }
 
     void get_plant_list(){
 
-
+            RecyclerView plant_list_recycler=view.findViewById(R.id.plant_list_recycler);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault());
 
         LinearLayoutManager mlinearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mlinearLayoutManager);
+        plant_list_recycler.setLayoutManager(mlinearLayoutManager);
         ArrayList<view_model> dataholder = new ArrayList<>();
-
         home_plant_list_adapter wAdapter = new home_plant_list_adapter(dataholder, getContext());
 
         CollectionReference collectionReference = db.collection("plants");
@@ -226,9 +235,9 @@ public class HomeFragment extends Fragment {
                             view_model obj = new view_model(
                                     s.getString("photo"),
                                     s.getString("plant_name"),
-                                    String.valueOf(dateFormat.format(s.getTimestamp("dob").toDate())),
-                                    "Task: Water in evening",
-                                    String.valueOf(s.getDouble("plant_streak").intValue()),
+                                    "Wheather: Winters",//String.valueOf(dateFormat.format(s.getTimestamp("dob").toDate())),
+                                    "Best plant according to your Loc. & Wheather",//"Task: Water in evening",
+                                    "",//String.valueOf(s.getDouble("plant_streak").intValue()),
                                     "",
                                     "",
                                     "",
@@ -237,7 +246,7 @@ public class HomeFragment extends Fragment {
 
                             dataholder.add(obj);
                         }
-                        recyclerView.setAdapter(wAdapter);
+                        plant_list_recycler.setAdapter(wAdapter);
                         swipe_layout.setRefreshing(false);
                     }
                 });
@@ -382,6 +391,55 @@ public class HomeFragment extends Fragment {
           //  Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+
+    //task 1
+    void get_task_list(){
+    RecyclerView task_recycler_view = view.findViewById(R.id.task_recycler_view);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault());
+        LinearLayoutManager mlinearLayoutManager = new LinearLayoutManager(getContext());
+        task_recycler_view.setLayoutManager(mlinearLayoutManager);
+        ArrayList<view_model> dataholder = new ArrayList<>();
+        task_of_day_adapter wAdapter = new task_of_day_adapter(dataholder, getContext());
+        db.collection("task_assigned").document(guid).collection("list")
+                .whereEqualTo("status",false).limit(1)
+                //.orderBy("date_time",Query.Direction.DESCENDING)
+                .get().addOnCompleteListener(task2 -> {
+                    if (task2.isSuccessful() && task2.getResult().size() > 0) {
+                        for (QueryDocumentSnapshot s2 : task2.getResult()) {
+                                                        //find
+                            db.collection("task").whereEqualTo("task_uid",s2.getString("task_uid"))
+                                    .whereEqualTo("status", true)
+                                    //.orderBy("date_time",Query.Direction.DESCENDING)
+                                    .get().addOnCompleteListener(task -> {
+                                        if (task.isSuccessful() && task.getResult().size() > 0) {
+                                            for (QueryDocumentSnapshot s : task.getResult()) {
+
+                                                view_model obj = new view_model(
+                                                        s.getString("task"),
+                                                        s.getString("category"),
+                                                        String.valueOf(s.getDouble("point").intValue()),
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        String.valueOf(dateFormat.format(s.getTimestamp("date_time").toDate())),
+                                                        s.getString("task_uid"));
+
+                                                dataholder.add(obj);
+                                            }
+                                            task_recycler_view.setAdapter(wAdapter);
+
+                                        } else {
+
+                                        }
+                                    });
+                        }
+                    }
+                });
     }
 }
 

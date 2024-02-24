@@ -72,29 +72,29 @@
                     android:layout_gravity="center|left"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|right"
-                android:orientation="horizontal"
-                android:padding="5dp">
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center|right"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:padding="5dp">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="15"
-                    android:layout_gravity="center|left"
-                    android:id="@+id/plant_streak_txt"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="15"-->
+<!--                    android:layout_gravity="center|left"-->
+<!--                    android:id="@+id/plant_streak_txt"/>-->
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:scaleType="center"
-                    android:id="@+id/plant_streak_img"
-                    android:src="@drawable/streak_logo"
-                    android:layout_gravity="center|left"/>
+<!--                <ImageView-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:scaleType="center"-->
+<!--                    android:id="@+id/plant_streak_img"-->
+<!--                    android:src="@drawable/streak_logo"-->
+<!--                    android:layout_gravity="center|left"/>-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
             </LinearLayout>
         </LinearLayout>
 

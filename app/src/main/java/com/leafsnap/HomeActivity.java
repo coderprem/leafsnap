@@ -10,13 +10,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,9 +21,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,11 +36,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.leafsnap.Community.post_create_activity;
 import com.leafsnap.Fragments.GardenFragment;
 import com.leafsnap.Fragments.HomeFragment;
-import com.leafsnap.Fragments.MapFragment;
+import com.leafsnap.Fragments.FeedFragment;
 import com.leafsnap.Fragments.ProfileFragment;
+import com.leafsnap.administrator.administrator_activity;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -130,7 +126,15 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+//        TextView task= findViewById(R.id.task_txt);
+//        task.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(HomeActivity.this,task_day_activity.class));
+//            }
+//        });
         //Menu BTN
+
         drawerLayout = findViewById(R.id.drawer_layout);
         ImageView menu_btn =(ImageView) findViewById(R.id.menu_btn);
         menu_btn.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +149,7 @@ public class HomeActivity extends AppCompatActivity {
                        ImageView user_img = findViewById(R.id.user_photo_img);
                        Picasso.get().load(login_photo).into(user_img);
                    }
+
                    drawerLayout.openDrawer(GravityCompat.START);
                    NavigationView navigationView = drawerLayout.findViewById(R.id.nav_view);
                    navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -156,6 +161,12 @@ public class HomeActivity extends AppCompatActivity {
                                startActivity(new Intent(HomeActivity.this,profile_activity.class));
                                drawerLayout.closeDrawer(GravityCompat.START);
                            }
+
+                           else if (id == R.id.nav_admin){
+                               startActivity(new Intent(HomeActivity.this, administrator_activity.class));
+                               drawerLayout.closeDrawer(GravityCompat.START);
+                           }
+
                             else if (id == R.id.nav_logout){
                                 logoutUser();
                                drawerLayout.closeDrawer(GravityCompat.START);
@@ -189,7 +200,7 @@ public class HomeActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.garden) {
                     replaceFragment(new GardenFragment());
                 } else if (item.getItemId() == R.id.map) {
-                    replaceFragment(new MapFragment());
+                    replaceFragment(new FeedFragment());
                 } else if (item.getItemId() == R.id.profile) {
                     replaceFragment(new ProfileFragment());
                 }
@@ -198,6 +209,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
     }
+
 
     //
     private  void replaceFragment(Fragment fragment) {
@@ -214,39 +226,37 @@ public class HomeActivity extends AppCompatActivity {
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.bottomsheetlayout);
 
-        LinearLayout newplantLayout = dialog.findViewById(R.id.layoutNewPlant);
-        LinearLayout streakLayout = dialog.findViewById(R.id.layoutStreak);
-        LinearLayout exploreLayout = dialog.findViewById(R.id.layoutExplore);
+        LinearLayout new_plant_layout = dialog.findViewById(R.id.layout_new_plant);
+        LinearLayout task_layout = dialog.findViewById(R.id.layout_tasks);
+        LinearLayout new_post_layout = dialog.findViewById(R.id.layout_new_post);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
-        newplantLayout.setOnClickListener(new View.OnClickListener() {
+        new_plant_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                dialog.dismiss();
+
                 startActivity(new Intent(HomeActivity.this,NewPlantActivity.class));
                 //Toast.makeText(HomeActivity.this,"Upload Pic of new Plant",Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+        task_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this,task_day_activity.class));
+                dialog.dismiss();
 
             }
         });
 
-        streakLayout.setOnClickListener(new View.OnClickListener() {
+        new_post_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                startActivity(new Intent(HomeActivity.this, post_create_activity.class));
                 dialog.dismiss();
-                Toast.makeText(HomeActivity.this,"Click plant pic to maintain your Streak",Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        exploreLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialog.dismiss();
-                Toast.makeText(HomeActivity.this,"Click plant pic to get info..",Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -309,6 +319,12 @@ public class HomeActivity extends AppCompatActivity {
 //        transaction.commit();
 //    }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new task_assigned().task_assigned(HomeActivity.this);
+    }
 
     public void onBackPressed() {
         // Handle the back press to show the views after exiting the SearchFragment

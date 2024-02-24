@@ -7,21 +7,21 @@
         android:icon="@drawable/outline_home_24"/>
 
     <item
-        android:id="@+id/garden"
-        android:title="Garden"
+        android:id="@+id/task"
+        android:title="Task"
         android:icon="@drawable/outline_yard_24"/>
 
     <item
         android:title=""/>
 
     <item
-        android:id="@+id/map"
-        android:title="Feed"
-        android:icon="@drawable/outline_feed_24" />
+        android:id="@+id/plant"
+        android:title="Plant"
+        android:icon="@drawable/outline_map_24" />
 
     <item
-        android:id="@+id/profile"
-        android:title="Profile"
+        android:id="@+id/user"
+        android:title="User"
         android:icon="@drawable/outline_account_circle_24" />
 
 </menu>

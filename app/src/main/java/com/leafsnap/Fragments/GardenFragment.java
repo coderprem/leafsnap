@@ -123,7 +123,6 @@ public class GardenFragment extends Fragment {
 
     void get_plant_list(){
 
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault());
         LinearLayoutManager mlinearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mlinearLayoutManager);

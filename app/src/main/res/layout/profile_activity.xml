@@ -211,6 +211,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="Following"
+                            android:id="@+id/follow_txt"
                             android:layout_margin="5dp"
                             android:textStyle="bold"/>
                     </LinearLayout>

@@ -12,40 +12,39 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.leafsnap.Community.posts_activity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class home_plant_list_adapter extends RecyclerView.Adapter<home_plant_list_adapter.viewholder> {
+public class profile_post_list_adapter extends RecyclerView.Adapter<profile_post_list_adapter.viewholder> {
 
     ArrayList<view_model> dataholder;
     Context context;
 
-    public home_plant_list_adapter(ArrayList<view_model> dataholder, Context context){
+    public profile_post_list_adapter(ArrayList<view_model> dataholder, Context context){
         this.dataholder = dataholder;
         this.context = context;
     }
     @NonNull
     @Override
-    public home_plant_list_adapter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_plant_row, parent, false);
+    public profile_post_list_adapter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_plant_row, parent, false);
         return new viewholder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull home_plant_list_adapter.viewholder holder, int position) {
+    public void onBindViewHolder(@NonNull profile_post_list_adapter.viewholder holder, int position) {
         final view_model temp = dataholder.get(position);
-        holder.plant_name_txt.setText(temp.getText2());
-        Picasso.get().load(temp.getText1()).into(holder.plant_img);
-        holder.plant_dob_txt.setText(temp.getText3());
-        holder.plant_task_txt.setText(temp.getText4());
-        //holder.plant_streak_txt.setText(temp.getText5());
+        if (temp.getText1().length()>10) {
+            Picasso.get().load(temp.getText1()).into(holder.plant_img);
+        }
 
         holder.layout_cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, plant_details_activity.class);
-                intent.putExtra("reg_uid", temp.getText10());
+                Intent intent = new Intent(context, posts_activity.class);
+                intent.putExtra("guid", temp.getText9());
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 context.startActivity(intent);
@@ -63,7 +62,7 @@ public class home_plant_list_adapter extends RecyclerView.Adapter<home_plant_lis
 
         CardView layout_cardview;
 
-        TextView plant_name_txt, plant_dob_txt, plant_task_txt, plant_streak_txt;
+        TextView plant_name_txt, plant_dob_txt, plant_loc_txt, plant_streak_txt;
         ImageView plant_img, plant_streak_img;
 
         public viewholder(@NonNull View itemView) {
@@ -71,11 +70,6 @@ public class home_plant_list_adapter extends RecyclerView.Adapter<home_plant_lis
 
             layout_cardview = itemView.findViewById(R.id.layout_cardview);
             plant_img = itemView.findViewById(R.id.plant_img);
-            plant_name_txt = itemView.findViewById(R.id.plant_name_txt);
-            plant_dob_txt = itemView.findViewById(R.id.plant_dob_txt);
-            plant_task_txt = itemView.findViewById(R.id.plant_task_txt);
-//            plant_streak_txt = itemView.findViewById(R.id.plant_streak_txt);
-//            plant_streak_img = itemView.findViewById(R.id.plant_streak_img);
         }
     }
 }

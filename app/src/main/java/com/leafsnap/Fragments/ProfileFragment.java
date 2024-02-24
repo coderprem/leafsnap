@@ -39,6 +39,7 @@ import com.leafsnap.login_activity;
 import com.leafsnap.plant_list_adapter;
 import com.leafsnap.profile_menu_dialog;
 import com.leafsnap.profile_plant_list_adapter;
+import com.leafsnap.profile_post_list_adapter;
 import com.leafsnap.user_profile_edit_activity;
 import com.leafsnap.view_model;
 import com.squareup.picasso.Picasso;
@@ -148,7 +149,8 @@ public class ProfileFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        get_profile_plant_list();
+                        //get_profile_plant_list();
+                        get_profile_post_list();
                         break;
 
                     case 1:
@@ -201,7 +203,9 @@ public class ProfileFragment extends Fragment {
 
 
                         //get plant data
-                        get_profile_plant_list();
+                        //get_profile_plant_list();
+                        get_profile_post_list();
+                        //get_saved_plant_list();
                         swipe_layout.setRefreshing(false);
                     } else {
 
@@ -210,6 +214,47 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+    }
+
+    void get_profile_post_list(){
+        plant_recyclerView = view.findViewById(R.id.plant_recyclerView);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault());
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
+        plant_recyclerView.setLayoutManager(mLayoutManager);
+        ArrayList<view_model> dataholder = new ArrayList<>();
+
+        profile_post_list_adapter wAdapter = new profile_post_list_adapter(dataholder, getContext());
+
+        CollectionReference collectionReference = db.collection("posts");
+        collectionReference.whereEqualTo("status",true).whereEqualTo("guid",guid)
+                //.orderBy("date_time",Query.Direction.DESCENDING)
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot s : task.getResult()){
+
+                            view_model obj = new view_model(
+                                    s.getString("photo"),
+                                    //s.getString("plant_name"),
+                                    "",
+                                    //String.valueOf(dateFormat.format(s.getTimestamp("dob").toDate())),
+                                    "",
+                                    //s.getString("plant_loc"),
+                                    "",
+                                    //String.valueOf(s.getDouble("plant_streak").intValue()),
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    s.getString(guid),
+                                    s.getString("post_uid"));
+
+                            dataholder.add(obj);
+                        }
+                        plant_recyclerView.setAdapter(wAdapter);
+                    }
+                });
     }
     void get_profile_plant_list(){
         plant_recyclerView = view.findViewById(R.id.plant_recyclerView);
